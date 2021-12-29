@@ -3,7 +3,6 @@ package com.crud.tasks.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,14 +10,15 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Entity
-@Table(name = "TASKS_2")
+@Table(name = "TASKS")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(name = "ID",unique = true)
     private Long id;
+    @Column(name = "NAME")
     private String title;
+    @Column(name = "DESCRIPTION")
     private String content;
 }
 
