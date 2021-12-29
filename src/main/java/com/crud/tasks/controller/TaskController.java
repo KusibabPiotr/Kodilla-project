@@ -33,12 +33,12 @@ public class TaskController {
                 .orElseThrow(() -> new TaskNotFoundException("There is no task with given id: " + id)));
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "createTask", consumes = MediaType.APPLICATION_JSON_VALUE)
     public TaskDto createTask(@RequestBody TaskDto taskDto){
         return taskMapper.mapToTaskDto(dbService.createTask(taskMapper.mapToTask(taskDto)));
     }
 
-    @PutMapping(value = "createTask", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "updateTask", consumes = MediaType.APPLICATION_JSON_VALUE)
     public TaskDto updateTask(@RequestBody TaskDto taskDto,
                               @RequestParam(required = false) Optional<Long> id)
             throws TaskNotFoundException, ParamNotProvidedException {
