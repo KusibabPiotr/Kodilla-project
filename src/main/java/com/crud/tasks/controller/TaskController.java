@@ -26,7 +26,7 @@ public class TaskController {
     }
 
     @GetMapping(value = "getTask")
-    public TaskDto getTask(@RequestParam(required = false) Optional<Long> id)
+    public TaskDto getTask(@RequestParam Optional<Long> id)
             throws TaskNotFoundException, ParamNotProvidedException {
         Long provided = id.orElseThrow(ParamNotProvidedException::new);
         return taskMapper.mapToTaskDto(dbService.getTask(provided)
@@ -39,16 +39,14 @@ public class TaskController {
     }
 
     @PutMapping(value = "updateTask", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public TaskDto updateTask(@RequestBody TaskDto taskDto,
-                              @RequestParam(required = false) Optional<Long> id)
-            throws TaskNotFoundException, ParamNotProvidedException {
-        Long provided = id.orElseThrow(ParamNotProvidedException::new);
-        return taskMapper.mapToTaskDto(dbService.updateTask(taskMapper.mapToTask(taskDto),provided));
+    public TaskDto updateTask(@RequestBody TaskDto taskDto)
+            throws TaskNotFoundException {
+        return taskMapper.mapToTaskDto(dbService.updateTask(taskMapper.mapToTask(taskDto)));
     }
 
     @DeleteMapping(value = "deleteTask")
     public void deleteTask(@RequestParam(required = false) Optional<Long> id)
-            throws ParamNotProvidedException {
+            throws ParamNotProvidedException, TaskNotFoundException {
         Long provided = id.orElseThrow(ParamNotProvidedException::new);
         dbService.deleteTask(provided);
     }

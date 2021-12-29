@@ -29,15 +29,21 @@ public class DbService {
     }
 
     @Transactional
-    public Task updateTask(final Task task,final long id) throws TaskNotFoundException {
-        Task fromDb = taskRepository.findById(id)
-                .orElseThrow(() -> new TaskNotFoundException("There is no task with given id: " + id));
+    public Task updateTask(final Task task)
+            throws TaskNotFoundException {
+        Task fromDb = taskRepository.findById(task.getId())
+                .orElseThrow(() -> new TaskNotFoundException("There is no task with given id: " + task.getId()));
         fromDb.setTitle(task.getTitle());
         fromDb.setContent(task.getContent());
         return fromDb;
     }
 
-    public void deleteTask(final long id){
-        taskRepository.deleteById(id);
+    public void deleteTask(final long id)
+            throws TaskNotFoundException {
+        boolean exists = taskRepository.existsById(id);
+        if (exists)
+            taskRepository.deleteById(id);
+        else
+            throw new TaskNotFoundException("There is no task with given id: " + id);
     }
 }
