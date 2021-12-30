@@ -9,11 +9,11 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@Entity(name = "tasks")
+@Entity
 @Table(name = "TASKS")
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "ID",unique = true)
     private Long id;
     @Column(name = "NAME")
