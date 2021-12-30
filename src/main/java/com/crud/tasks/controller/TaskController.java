@@ -15,6 +15,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/v1/task")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class TaskController {
 
     private final TaskMapper taskMapper;
@@ -41,7 +42,7 @@ public class TaskController {
     @PutMapping(value = "updateTask", consumes = MediaType.APPLICATION_JSON_VALUE)
     public TaskDto updateTask(@RequestBody TaskDto taskDto)
             throws TaskNotFoundException {
-        return taskMapper.mapToTaskDto(dbService.updateTask(taskMapper.mapToTask(taskDto)));
+        return taskMapper.mapToTaskDto(dbService.createTask(taskMapper.mapToTask(taskDto)));
     }
 
     @DeleteMapping(value = "deleteTask")
