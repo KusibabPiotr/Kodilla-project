@@ -46,9 +46,8 @@ public class TaskController {
     }
 
     @DeleteMapping(value = "deleteTask")
-    public void deleteTask(@RequestParam(required = false) Optional<Long> id)
-            throws ParamNotProvidedException, TaskNotFoundException {
-        Long provided = id.orElseThrow(ParamNotProvidedException::new);
-        dbService.deleteTask(provided);
+    public void deleteTask(@RequestParam(required = false) Long id)
+            throws TaskNotFoundException {
+        dbService.deleteTask(id);
     }
 }
