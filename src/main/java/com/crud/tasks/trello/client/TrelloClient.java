@@ -35,7 +35,7 @@ public class TrelloClient {
                     .stream()
                     .filter(p -> Objects.nonNull(p.getId()) && Objects.nonNull(p.getName()))
                     .collect(Collectors.toList());
-        } catch (RestClientException e) {
+        } catch (RestClientException | IllegalArgumentException e) {
             log.error(e.getMessage(), e);
             return Collections.emptyList();
         }

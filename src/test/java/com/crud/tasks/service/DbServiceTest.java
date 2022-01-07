@@ -1,20 +1,20 @@
 package com.crud.tasks.service;
 
 import com.crud.tasks.domain.Task;
+import com.crud.tasks.exceptions.TaskNotFoundException;
 import com.crud.tasks.repository.TaskRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DbServiceTest {
@@ -66,6 +66,58 @@ class DbServiceTest {
         Optional<Task> optionalTask = dbService.getTask(1L);
         //then
         assertFalse(optionalTask.isPresent());
+    }
+
+    @Test
+    void testCreateTask(){
+        //given
+        Task task = new Task(1L, "task", "task");
+        when(taskRepository.save(task)).thenReturn(task);
+        //when
+        Task created = dbService.createTask(task);
+        //then
+        assertNotNull(created);
+        assertEquals(1L,created.getId());
+    }
+
+    @Test
+    void testUpdateTask(){
+        //given
+        Task updated = new Task(1L, "updated", "updated");
+        Task task = new Task(1L, "task", "task");
+        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+        //when
+        Task afterUpdate = dbService.updateTask(updated);
+        //then
+        assertNotNull(afterUpdate);
+        assertEquals(1L,afterUpdate.getId());
+        assertEquals("updated",afterUpdate.getTitle());
+        assertEquals("updated",afterUpdate.getContent());
+    }
+
+    @Test
+    void testUpdateTaskThrowException(){
+        //given
+        //when&then
+        assertThrows(TaskNotFoundException.class,() -> dbService.deleteTask(1L));
+    }
+
+    @Test
+    void testDelateTaskTrue(){
+        //given
+        when(taskRepository.existsById(1L)).thenReturn(true);
+        //when
+        dbService.deleteTask(1L);
+        //then
+        verify(taskRepository,times(1)).deleteById(1L);
+    }
+
+    @Test
+    void testDelateTaskThrowException(){
+        //given
+        when(taskRepository.existsById(1L)).thenReturn(false);
+        //when&then
+        assertThrows(TaskNotFoundException.class,()->dbService.deleteTask(1L));
     }
 
 }

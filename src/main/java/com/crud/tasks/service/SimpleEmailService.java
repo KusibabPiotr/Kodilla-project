@@ -19,7 +19,7 @@ public class SimpleEmailService {
 
     private final JavaMailSender javaMailSender;
 
-    public void send(final Mail mail) {
+    public Mail send(final Mail mail) {
         log.info("Starting email preparation...");
 
         try {
@@ -29,6 +29,7 @@ public class SimpleEmailService {
         } catch (MailException e) {
             log.error("Failed to process email sending: " + e.getMessage(), e);
         }
+        return mail;
     }
 
     private SimpleMailMessage createMailMessage(final Mail mail) {
