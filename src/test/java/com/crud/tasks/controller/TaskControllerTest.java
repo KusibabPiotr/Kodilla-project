@@ -66,9 +66,10 @@ class TaskControllerTest {
         when(dbService.getTask(1L)).thenReturn(java.util.Optional.of(task));
         when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
         //when&then
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/task/getTask")
-                .queryParam("id","1")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders
+                    .get("/v1/task/getTask")
+                    .queryParam("id","1")
+                    .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id",Matchers.is(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title",Matchers.is("title")))
@@ -78,20 +79,21 @@ class TaskControllerTest {
     @Test
     void shouldCreateTask() throws Exception {
         //given
-        TaskDto dtoToReturn = new TaskDto(1L, "title", "content");
+        TaskDto dto = new TaskDto(1L, "title", "content");
         Task task = new Task(1L, "title", "content");
 
         when(taskMapper.mapToTask(any(TaskDto.class))).thenReturn(task);
         when(dbService.createTask(any(Task.class))).thenReturn(task);
-        when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(dtoToReturn);
+        when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(dto);
+
         Gson gson = new Gson();
-        String jsonContent = gson.toJson(dtoToReturn);
+        String jsonContent = gson.toJson(task);
         //when&then
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/v1/task/createTask")
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-                .content(jsonContent))
+                    .post("/v1/task/createTask")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .characterEncoding("UTF-8")
+                    .content(jsonContent))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("title")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is("content")));
@@ -101,20 +103,21 @@ class TaskControllerTest {
     @Test
     void shouldUpdateTask() throws Exception {
         //given
-        TaskDto dtoToReturn = new TaskDto(1L, "title", "content");
+        TaskDto dto = new TaskDto(1L, "title", "content");
         Task task = new Task(1L, "title", "content");
 
         when(taskMapper.mapToTask(any(TaskDto.class))).thenReturn(task);
         when(dbService.createTask(any(Task.class))).thenReturn(task);
-        when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(dtoToReturn);
+        when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(dto);
+
         Gson gson = new Gson();
-        String jsonContent = gson.toJson(dtoToReturn);
+        String jsonContent = gson.toJson(dto);
         //when&then
         mockMvc.perform(MockMvcRequestBuilders
-                .put("/v1/task/updateTask")
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-                .content(jsonContent))
+                    .put("/v1/task/updateTask")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .characterEncoding("UTF-8")
+                    .content(jsonContent))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("title")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is("content")));
