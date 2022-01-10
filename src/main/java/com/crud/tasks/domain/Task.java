@@ -10,14 +10,16 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Table(name = "TASKS")
 public class Task {
     @Id
-    @GeneratedValue
-    @Column(name = "id",unique = true)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID",unique = true)
     private Long id;
-    @Column(name = "name")
+    @Column(name = "NAME")
     private String title;
-    @Column(name = "description")
+    @Column(name = "DESCRIPTION")
     private String content;
 }
 
